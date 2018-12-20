@@ -42,7 +42,7 @@ static void writeBytes(waveFile file, void* bytes, int length) {
 
 /* Write a string to a file. */
 static void writeString(waveFile file, char* string) {
-  writeBytes(file, string, strlen(string));
+  writeBytes(file, string, (int)strlen(string));
 }
 
 /* Write an integer to a file in little endian order. */
@@ -74,7 +74,7 @@ static int readBytes(waveFile file, void* bytes, int length) {
   if (file->failed) {
     return 0;
   }
-  return fread(bytes, sizeof(char), length, file->soundFile);
+  return (int)fread(bytes, sizeof(char), length, file->soundFile);
 }
 
 /* Read an exact number of bytes from the input file. */
@@ -84,7 +84,7 @@ static void readExactBytes(waveFile file, void* bytes, int length) {
   if (file->failed) {
     return;
   }
-  numRead = fread(bytes, sizeof(char), length, file->soundFile);
+  numRead = (int)fread(bytes, sizeof(char), length, file->soundFile);
   if (numRead != length) {
     fprintf(stderr, "Failed to read requested bytes from input file\n");
     file->failed = 1;
@@ -120,7 +120,7 @@ static int readShort(waveFile file) {
 /* Read a string from the input and compare it to an expected string. */
 static void expectString(waveFile file, char* expectedString) {
   char buf[11]; /* Be sure that we never call with a longer string */
-  int length = strlen(expectedString);
+  int length = (int)strlen(expectedString);
 
   if (length > 10) {
     fprintf(stderr, "Internal error: expected string too long\n");

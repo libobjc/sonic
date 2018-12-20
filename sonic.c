@@ -644,8 +644,8 @@ static int findPitchPeriodInRange(short* samples, int minPeriod, int maxPeriod,
       worstPeriod = period;
     }
   }
-  *retMinDiff = minDiff / bestPeriod;
-  *retMaxDiff = maxDiff / worstPeriod;
+  *retMinDiff = (int)(minDiff / bestPeriod);
+  *retMaxDiff = (int)(maxDiff / worstPeriod);
   return bestPeriod;
 }
 
@@ -973,7 +973,7 @@ static int adjustRate(sonicStream stream, float rate,
 /* Skip over a pitch period, and copy period/speed samples to the output */
 static int skipPitchPeriod(sonicStream stream, short* samples, float speed,
                            int period) {
-  long newSamples;
+  int newSamples;
   int numChannels = stream->numChannels;
 
   if (speed >= 2.0f) {
@@ -995,7 +995,7 @@ static int skipPitchPeriod(sonicStream stream, short* samples, float speed,
 /* Insert a pitch period, and determine how much input to copy directly. */
 static int insertPitchPeriod(sonicStream stream, short* samples, float speed,
                              int period) {
-  long newSamples;
+  int newSamples;
   short* out;
   int numChannels = stream->numChannels;
 
